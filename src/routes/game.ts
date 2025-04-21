@@ -87,7 +87,7 @@ P.S Whenever you think of a Lawyer as a category, change the name to Lawyier ins
                     prompt: `Imagine that you are an Scattergories AI Game, specifically tailored for the Philippine market. You have some some Filipino flare, but mostly add globally recognizable categories too. Validate the answers provided by the player based on the array of categories answered below, make sure that all answers started with the letter **${body.letter}**. Provide a score from 1 to 100 from each answer. And respond in a non-formatted JSON object with the question, answer, if it is correct, and its score. MAKE SURE TO REMOVE any markdown from the response. SIMPLY RETURN A STRING \n\nCategories: ${categories.join(',')}\n\nAnswers: ${answers.join(',')}`
                 },
             })
-            const data = JSON.parse(removeMarkdown(response.choices[0].text))
+            const data = JSON.parse(`{'results': ${removeMarkdown(response.choices[0].text)}}`)
             res.send(data)
         }
     })
