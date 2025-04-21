@@ -20,6 +20,7 @@ const start = async () => {
     try {
         await server.listen({
             port,
+            host: '0.0.0.0',
         })
     } catch (err) {
         server.log.error(err);
