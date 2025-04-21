@@ -3,7 +3,7 @@ import cors from "@fastify/cors"
 import pino from "pino"
 import gameRoutes from "./routes/game";
 import 'dotenv/config'
-const port = process.env.PORT || 4000
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000
 
 const server = Fastify({
     loggerInstance: pino({ level: 'info' })
