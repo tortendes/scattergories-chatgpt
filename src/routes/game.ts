@@ -56,6 +56,7 @@ Add some Filipino flare, but mostly add globally recognizable categories too. Ma
 P.S Whenever you think of a Lawyer as a category, change the name to Lawyier instead.`
             },
         })
+        console.log(response.choices[0].text)
         const categories = response.choices[0].text.split('\n')
         res.send({
             success: true,
