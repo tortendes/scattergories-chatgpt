@@ -18,7 +18,7 @@ const start = async () => {
     server.log.info('Loading environment variables', process.env)
     try {
         await server.listen({
-            port: 8080,
+            port: process.env.PORT ? parseInt(process.env.PORT, 10) : 8080,
         })
     } catch (err) {
         server.log.error(err);
