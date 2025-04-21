@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -w",
-    "dev": "nodemon ./src/index.ts",
+    "build": "tsc -p",
+    "dev": "tsc -w",
     "start": "node build/index.js"
   },
   "keywords": [],
