@@ -1,7 +1,6 @@
 import 'dotenv/config'
 import { FastifyInstance, FastifyPluginOptions } from "fastify";
 import { ofetch } from 'ofetch';
-import OpenAI from "openai";
 
 interface ValidationAnswers {
     category: string,
@@ -21,6 +20,7 @@ function removeMarkdown(text: string) {
 
 
 async function gameRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
+    const { jsonrepair } = await require('jsonrepair')
     fastify.addSchema({
         $id: 'validationSchema',
         type: 'object',
@@ -84,12 +84,12 @@ P.S Whenever you think of a Lawyer as a category, change the name to Lawyier ins
                 },
                 body: {
                     model: 'google/gemma-3-27b-it:free',
-                    prompt: `Imagine that you are an Scattergories AI Game, specifically tailored for the Philippine market. You have some some Filipino flare, but mostly add globally recognizable categories too. Validate the answers provided by the player based on the array of categories answered below, make sure that all answers started with the letter **${body.letter}**. Provide a score from 1 to 100 from each answer. And respond in a non-formatted JSON object with the question, answer, if it is correct, and its score. MAKE SURE TO REMOVE any markdown from the response. SIMPLY RETURN A STRING \n\nCategories: ${categories.join(',')}\n\nAnswers: ${answers.join(',')}`
+                    prompt: `Imagine that you are an Scattergories AI Game, specifically tailored for the Philippine market. You have some some Filipino flare, but mostly add globally recognizable categories too. Validate the answers provided by the player based on the array of categories answered below, make sure that all answers started with the letter **${body.letter}**. Provide a score from 1 to 100 from each answer. And respond in a non-formatted JSON object with the question, answer, if it is correct, and its score. MAKE SURE TO REMOVE any markdown from the response. SIMPLY RETURN A STRING OF THE RESULTS, NOTHING ELSE, NO MARKDOWN FORMATTING, NO "Oh, that (etc, etc etc)". SHUT UP. \n\nCategories: ${categories.join(',')}\n\nAnswers: ${answers.join(',')}`
                 },
             })
-            const data = JSON.parse(`{
-                "results": ${removeMarkdown(response.choices[0].text)}
-            }`)
+            console.log(removeMarkdown(response.choices[0].text))
+            console.log(`{ "response": ${(removeMarkdown(response.choices[0].text))}}`)
+            const data = JSON.parse(jsonrepair(removeMarkdown(response.choices[0].text)));
             console.log(data)
             res.send(data)
         }
